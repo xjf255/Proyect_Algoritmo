@@ -1,8 +1,3 @@
-//Nombre Adrian Juan Fernando Diaz Tazen
-//Curso, Algoritmos
-//Sección B
-//Nombre programa : Intereses
-
 #include <iostream>
 #include <stdio.h>
 #include <string.h>
@@ -10,62 +5,49 @@
  
 using namespace std;
 
-void imprimir(double f1[4], double f2[4],double f3[4]){
-	cout<<"*********RESPUESTA*********"<<endl;
-	for(int i=0; i <4;i++){
-		if(i==3){
-			cout<<"= "<<f1[i];
-		}else{
-			cout<<f1[i]<<" ";
-		}
-	}
-	cout<<endl;
-	for(int i=0; i <4;i++){
-		if(i==3){
-			cout<<"= "<<f2[i];
-		}else{
-			cout<<f2[i] <<" ";
-		}
-	}
-	cout<<endl;
-	for(int i=0; i <4;i++){
-		if(i==3){
-			cout<<"= "<<f3[i];
-		}else{
-			cout<<f3[i]<<" ";
-		}
-	}	
-	cout<<endl;
-}
-int comprobacion(double f[4]){
+double comprobacion(double f[][4]){
 	int cont = 0;
-	for(int i=0; i < 3;i++){
-		if(f[i] == 0){
-			cont++;
-			if(cont == 3){
-				cout<<"R/El sistema es Inconsistente";
-				return 0;
+	for(int j=0; j < 4 ; j++){
+		cont = 0;
+		for(int i=0; i < 3;i++){
+			if(f[j][i] == 0){
+				cont++;
+				if(cont == 3){
+					cout<<"R/El sistema es Inconsistente";
+					return 0;
+				}
 			}
-		}
-	}	
+		}		
+	}
+	return 1;
 }
 int escalonada(double f1[4], double f2[4],double f3[4]){
 	if(f1[0] != 0 && f2[1] != 0 && f3[2] != 0) {
-//		cout<<f1<<f2<<f3;
 		return 1;
-	}else if(f1[2] != 0 && f2[1] != 0 && f3[0] != 0){
-		return 3;
-	}else{
+	}else if(f1[2] != 0 && f2[0] != 0 && f3[1] != 0){
 		return 2;
+	}else if(f1[1] != 0 && f2[2] != 0 && f3[0] != 0){
+		return 3;
+	}else if(f1[2] != 0 && f2[1] != 0 && f3[0] != 0){
+		return 4;
+	}else if(f1[0] != 0 && f2[2] != 0 && f3[1] != 0){
+		return 5;
+	}else if(f1[1] != 0 && f2[0] != 0 && f3[2] != 0){
+		return 6;
+	}else{
+		return 0;
 	}
 }
 int main(){
 	double matriz[3][4];
+	double matriz2[3][4];
 	double f1[4];
 	double f2[4];
 	double f3[4];
 	int forma;
 	double cont;
+	double contb;
+	int k;
 	//Recibir
 	for(int j=0;j< 3 ; j++){
 		for(int i = 0 ; i < 4 ; i++){
@@ -94,176 +76,134 @@ int main(){
 			}
 		}
 	}	
-	if(comprobacion(f1) == 0 || comprobacion(f2) == 0 || comprobacion(f3) == 0){
+
+	if(comprobacion(matriz) == 0){
+		cout<<"com";
 		return 0;
 	}
+	
+	//forma
 	forma = escalonada(f1,f2,f3);
-	if(forma == 3){
-		cont = f3[0];
-		for(int i= 0; i<4;i++){
-			f3[i]=f3[i]/cont;
-		}
-		if(f2[0] != 0){
-			cont = f2[0];
-			for(int i= 0; i<4;i++){
-				f2[i]=f2[i]-(cont*f3[i]);
-			}	
-		}
-		if(f1[0] != 0){
-			cont = f1[0];
-			for(int i= 0; i<4;i++){
-				f1[i]=f1[i]-(cont*f3[i]);
-			}
-		}	
-		//2da columna
-		cont = f2[1];
-		for(int i= 0; i<4;i++){
-			f2[i]=f2[i]/cont;
-		}	
-		if(f3[1] != 0){
-			cont = f3[1];
-			for(int i= 0; i<4;i++){
-				f3[i]=f3[i]-(cont*f2[i]);
-			}	
-		}
-		if(f1[1] != 0){
-			cont = f1[1];
-			for(int i= 0; i<4;i++){
-				f1[i]=f1[i]-(cont*f2[i]);
+	
+	if(forma == 1){
+		for(int j=0; j<3 ; j++){
+			for(int i = 0 ; i < 4 ; i++){
+				if(j == 0){
+					matriz2[j][i] = f1[i];	
+				}else if(j == 1){
+					matriz2[j][i] = f2[i];
+				}else{
+					matriz2[j][i] = f3[i];
+				}
 			}
 		}
-		//3ra Columna
-		cont = f1[2];
-		for(int i= 0; i<4;i++){
-			f1[i]=f1[i]/cont;
-		}	
-		if(f3[2] != 0){
-			cont = f3[2];
-			for(int i= 0; i<4;i++){
-				f3[i]=f3[i]-(cont*f1[i]);
-			}	
-		}
-		if(f2[2] != 0){
-			cont = f2[2];
-			for(int i= 0; i<4;i++){
-				f2[i]=f2[i]-(cont*f1[i]);
-			}
-		}
-		if(comprobacion(f1) == 0 || comprobacion(f2) == 0 || comprobacion(f3) == 0){
-			return 0;
-		}
-		imprimir(f3,f2,f1);
-	}else if(forma == 1){
-		cont = f1[0];
-		for(int i= 0; i<4;i++){
-			f1[i]=f1[i]/cont;
-		}
-		if(f2[0] != 0){
-			cont = f2[0];
-			for(int i= 0; i<4;i++){
-				f2[i]=f2[i]-(cont*f1[i]);
-			}	
-		}
-		if(f3[0] != 0){
-			cont = f3[0];
-			for(int i= 0; i<4;i++){
-				f3[i]=f3[i]-(cont*f1[i]);
-			}
-		}	
-		//2da columna
-		cont = f2[1];
-		for(int i= 0; i<4;i++){
-			f2[i]=f2[i]/cont;
-		}	
-		if(f3[1] != 0){
-			cont = f3[1];
-			for(int i= 0; i<4;i++){
-				f3[i]=f3[i]-(cont*f2[i]);
-			}	
-		}
-		if(f1[1] != 0){
-			cont = f1[1];
-			for(int i= 0; i<4;i++){
-				f1[i]=f1[i]-(cont*f2[i]);
-			}
-		}
-		//3ra Columna
-		cont = f3[2];
-		for(int i= 0; i<4;i++){
-			f3[i]=f3[i]/cont;
-		}	
-		if(f1[2] != 0){
-			cont = f1[2];
-			for(int i= 0; i<4;i++){
-				f1[i]=f1[i]-(cont*f3[i]);
-			}	
-		}
-		if(f2[2] != 0){
-			cont = f2[2];
-			for(int i= 0; i<4;i++){
-				f2[i]=f2[i]-(cont*f3[i]);
-			}
-		}
-		if(comprobacion(f1) == 0 || comprobacion(f2) == 0 || comprobacion(f3) == 0){
-			return 0;
-		}
-		imprimir(f1,f2,f3);
-	}else{
-		cont = f2[0];
-		for(int i= 0; i<4;i++){
-			f2[i]=f2[i]/cont;
-		}
-		if(f1[0] != 0){
-			cont = f1[0];
-			for(int i= 0; i<4;i++){
-				f1[i]=f1[i]-(cont*f2[i]);
-			}	
-		}
-		if(f3[0] != 0){
-			cont = f3[0];
-			for(int i= 0; i<4;i++){
-				f3[i]=f3[i]-(cont*f2[i]);
-			}
-		}	
-		//2da columna
-		cont = f1[1];
-		for(int i= 0; i<4;i++){
-			f1[i]=f1[i]/cont;
-		}	
-		if(f3[1] != 0){
-			cont = f3[1];
-			for(int i= 0; i<4;i++){
-				f3[i]=f3[i]-(cont*f1[i]);
-			}	
-		}
-		if(f2[1] != 0){
-			cont = f2[1];
-			for(int i= 0; i<4;i++){
-				f2[i]=f2[i]-(cont*f1[i]);
-			}
-		}
-		//3ra Columna
-		cont = f3[2];
-		for(int i= 0; i<4;i++){
-			f3[i]=f3[i]/cont;
-		}	
-		if(f1[2] != 0){
-			cont = f1[2];
-			for(int i= 0; i<4;i++){
-				f1[i]=f1[i]-(cont*f3[i]);
-			}	
-		}
-		if(f2[2] != 0){
-			cont = f2[2];
-			for(int i= 0; i<4;i++){
-				f2[i]=f2[i]-(cont*f3[i]);
-			}
-		}
-		if(comprobacion(f1) == 0 || comprobacion(f2) == 0 || comprobacion(f3) == 0){
-			return 0;
-		}
-		imprimir(f1,f2,f3);
 	}
+	if(forma == 2){
+		for(int j=0; j<3 ; j++){
+			for(int i = 0 ; i < 4 ; i++){
+				if(j == 0){
+					matriz2[j][i] = f2[i];	
+				}else if(j == 1){
+					matriz2[j][i] = f3[i];
+				}else{
+					matriz2[j][i] = f1[i];
+				}
+			}
+		}
+	}
+	if(forma == 3){
+		for(int j=0; j<3 ; j++){
+			for(int i = 0 ; i < 4 ; i++){
+				if(j == 0){
+					matriz2[j][i] = f3[i];	
+				}else if(j == 1){
+					matriz2[j][i] = f1[i];
+				}else{
+					matriz2[j][i] = f2[i];
+				}
+			}
+		}
+	}
+	if(forma == 4){
+		for(int j=0; j<3 ; j++){
+			for(int i = 0 ; i < 4 ; i++){
+				if(j == 0){
+					matriz2[j][i] = f3[i];	
+				}else if(j == 1){
+					matriz2[j][i] = f2[i];
+				}else{
+					matriz2[j][i] = f1[i];
+				}
+			}
+		}
+	}
+	if(forma == 5){
+		for(int j=0; j<3 ; j++){
+			for(int i = 0 ; i < 4 ; i++){
+				if(j == 0){
+					matriz2[j][i] = f1[i];	
+				}else if(j == 1){
+					matriz2[j][i] = f3[i];
+				}else{
+					matriz2[j][i] = f2[i];
+				}
+			}
+		}
+	}
+	if(forma == 2){
+		for(int j=0; j<3 ; j++){
+			for(int i = 0 ; i < 4 ; i++){
+				if(j == 0){
+					matriz2[j][i] = f2[i];	
+				}else if(j == 1){
+					matriz2[j][i] = f1[i];
+				}else{
+					matriz2[j][i] = f3[i];
+				}
+			}
+		}
+	}
+	
+	//respuesta
+	//cada fila
+	for(int j=0;j< 3 ; j++){
+		//para dar 1
+		cont = matriz2[j][j];
+		k = j;
+		do{
+			if(matriz2[k][j] != 0 && matriz2[k][j] != 1){
+				contb = matriz2[k][j];
+				for(int i = 0; i < 4;i++){
+					if(j == k){
+						matriz2[k][i] = matriz2[k][i]/cont;
+					}else if(j != k){
+						matriz2[k][i]=matriz2[k][i]-(contb * matriz2[j][i]);
+					}
+					}
+			}		
+			if(k < 2){
+				k++;	
+			}else{
+				k = 0;	
+			}
+		if(comprobacion(matriz2) == 0){
+			return 0;
+		}		
+		}while(k != j);
+	}
+	
+	cout<<"*********RESPUESTA*********"<<endl;
+	for(int j=0;j< 3 ; j++){
+		for(int i = 0 ; i < 4 ; i++){
+			if(i != 3){
+				cout<<matriz2[j][i]<<"   ";
+			}else{
+				cout<<" = "<<matriz2[j][i];
+			}
+		}
+		cout<<endl;
+	}	
+		
 	getch();
 	return 0;
 }
